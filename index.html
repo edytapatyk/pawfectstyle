@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pawfect Style | Dog Grooming SPA</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        /* Natural Green Palette */
+        --color-background: #F7F7F5;
+        --color-section-bg: #FFFFFF;
+        --color-primary: #3D4C3A;
+        --color-accent: #82927A;
+        --color-text: #5A6158;
+        --color-light-grey: #D8DCD5;
+        --color-header-bg: rgba(247, 247, 245, 0.85);
+        --header-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        --switch-bg: #E0E0E0;
+        --switch-border: #CCCCCC;
+        --switch-handle: #FFFFFF;
+    }
+    body.dark-mode {
+        /* Natural Green Palette - Dark Mode */
+        --color-background: #2A3128;
+        --color-section-bg: #343D32;
+        --color-primary: #FDFBF8;
+        --color-accent: #9CB092;
+        --color-text: #E0E2DD;
+        --color-light-grey: #454D43;
+        --color-header-bg: rgba(42, 49, 40, 0.85);
+        --header-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        --switch-bg: #5A5A5A;
+        --switch-border: #4A4A4A;
+        --switch-handle: #383838;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: 'Montserrat', sans-serif; background-color: var(--color-background); color: var(--color-text); line-height: 1.8; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; transition: background-color 0.4s ease, color 0.4s ease; }
+    body.nav-open { overflow: hidden; }
+    
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes drawLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    .fade-in-element { opacity: 0; transition: opacity 0.9s cubic-bezier(0.19, 1, 0.22, 1); }
+    .fade-in-element.is-visible { opacity: 1; }
+    .animate-slide-up { transform: translateY(30px); }
+    .animate-slide-up.is-visible { transform: translateY(0); transition: opacity 0.9s cubic-bezier(0.19, 1, 0.22, 1), transform 0.9s cubic-bezier(0.19, 1, 0.22, 1); }
+    .animate-slide-in-left.is-visible { animation: slideInLeft 1s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+    .animate-slide-in-right.is-visible { animation: slideInRight 1s cubic-bezier(0.19, 1, 0.22, 1) 0.2s forwards; }
+    .title-container .section-divider { transform: scaleX(0); transform-origin: center; }
+    .title-container.is-visible .section-divider { animation: drawLine 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.3s forwards; }
+
+    h1, h2, h3, h4, h5 { font-family: 'Cormorant Garamond', serif; color: var(--color-primary); font-weight: 700; line-height: 1.2; }
+    h1 { font-size: clamp(3rem, 10vw, 5rem); line-height: 1.1; }
+    h2 { font-size: clamp(2.2rem, 7vw, 3rem); margin-bottom: 0; text-align: center; }
+    h3 { font-size: clamp(1.6rem, 5vw, 2.2rem); margin-bottom: 1rem; color: var(--color-primary); text-align: center;}
+    h4 { font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 1.5px; font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; }
+    h5 { font-size: clamp(1.3rem, 4vw, 1.5rem); margin-bottom: 1rem; }
+    p { margin-bottom: 1.2rem; font-weight: 300; }
+    a { color: var(--color-accent); text-decoration: none; transition: color 0.3s ease; }
+    a:hover { color: var(--color-primary); }
+    .section-divider { border: 0; height: 1px; background-color: var(--color-light-grey); margin: 2rem auto; max-width: 100px; transition: background-color 0.4s ease; }
+    .title-container { text-align: center; margin-bottom: 4rem; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 7rem 0; overflow-x: hidden; transition: background-color 0.4s ease; }
+
+    .main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 0.75rem 0; transition: background-color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease; border-bottom: 1px solid transparent; }
+    .main-header.scrolled { background-color: var(--color-header-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: var(--header-shadow); border-bottom-color: var(--color-light-grey); }
+    
+    .main-header .container {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    .logo img {
+        max-height: 60px;
+        width: auto;
+        display: block;
+    }
+    
+    .main-nav {
+        justify-self: center;
+    }
+    .main-nav ul { 
+        list-style: none; 
+        display: flex; 
+        align-items: center; 
+        gap: 3rem; 
+        margin: 0; padding: 0; 
+    }
+    .main-nav a { 
+        font-weight: 400; 
+        font-size: 0.9rem; 
+        color: var(--color-text); 
+        padding-bottom: 5px; 
+        border-bottom: 2px solid transparent; 
+        text-transform: uppercase; 
+        letter-spacing: 1px; 
+    }
+    .main-nav a:hover { color: var(--color-primary); border-bottom-color: var(--color-accent); }
+    
+    .header-actions { 
+        display: flex; 
+        align-items: center; 
+        gap: 1.5rem;
+        justify-self: end;
+    }
+    
+    .switch { font-size: 17px; position: relative; display: inline-block; width: 3.5em; height: 2em; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background-color: var(--switch-bg); border: 1px solid var(--switch-border); border-radius: 50px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .slider:before { position: absolute; content: ""; height: 1.4em; width: 1.4em; left: 0.3em; bottom: 0.2em; background-color: var(--switch-handle); border-radius: inherit; transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1); }
+    .switch input:checked + .slider { background-color: var(--color-accent); border-color: var(--color-accent); }
+    .switch input:checked + .slider:before { transform: translateX(1.5em); }
+
+    .btn { display: inline-block; padding: 1rem 2.5rem; font-family: 'Montserrat', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; border-radius: 0; transition: all 0.4s ease; cursor: pointer; border: 1px solid var(--color-accent); position: relative; z-index: 1; overflow: hidden; text-align: center; }
+    .btn::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-accent); transform: scaleX(0); transform-origin: right; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); z-index: -1;}
+    .btn:hover::before { transform: scaleX(1); transform-origin: left; }
+    .btn:hover { color: var(--color-section-bg); }
+    body.dark-mode .btn:hover { color: var(--color-primary); }
+    .btn .arrow { display: inline-block; transition: transform 0.4s ease; margin-left: 0.5em; }
+    .btn:hover .arrow { transform: translateX(5px); }
+    .btn-primary { background-color: var(--color-accent); color: var(--color-section-bg); border-color: var(--color-accent); }
+    body.dark-mode .btn-primary { color: var(--color-background); }
+    .btn-primary:hover { background-color: transparent; color: var(--color-accent); }
+    .btn-primary:hover::before { transform: scaleX(0); }
+    
+    .nav-book-btn { 
+        padding: 0.4rem 0.9rem;
+        font-size: 0.8rem;
+        letter-spacing: 1.2px;
+    }
+    
+    .nav-toggle { display: none; }
+    
+    #hero { 
+        position: relative;
+        min-height: 100vh; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        text-align: center; 
+        color: white; 
+        padding-top: 5rem; 
+        padding-bottom: 3rem; 
+        overflow: hidden;
+        background-image: url('https://files.catbox.moe/7ywjet.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    #hero::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35));
+        z-index: 2;
+    }
+
+    .hero-content { 
+        max-width: 900px;
+        position: relative;
+        z-index: 3;
+    }
+    .hero-content > * { opacity: 0; }
+    .hero-subheading { animation: fadeInUp 1s ease-out 0.4s forwards; display: block; font-weight: 400; font-size: clamp(0.9rem, 4vw, 1.2rem); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 1rem; }
+    .hero-content h1 { color: white; text-shadow: 2px 2px 15px rgba(0,0,0,0.4); animation: fadeInUp 1s ease-out 0.6s forwards; }
+    .hero-content p { font-size: 1.25rem; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; max-width: 600px; margin: 2rem auto 2.5rem; text-shadow: 1px 1px 10px rgba(0,0,0,0.4); color: white; animation: fadeInUp 1s ease-out 0.8s forwards; }
+    .hero-content .btn { animation: fadeInUp 1s ease-out 1s forwards; }
+    
+    #about { background-color: var(--color-section-bg); }
+    .about-grid { display: grid; grid-template-columns: 1fr; align-items: center; gap: 4rem; }
+    .about-text { opacity: 0; text-align: center; }
+    .about-text p { font-size: 1.05rem; max-width: 800px; margin-left: auto; margin-right: auto;}
+    
+    #training { background-color: var(--color-background); }
+    .training-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .training-card { background-color: var(--color-section-bg); padding: 2.5rem; border-radius: 5px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); text-align:center; }
+    .training-card h5 { text-align: center; }
+    .training-card p { text-align: left; }
+
+    #products { background-color: var(--color-section-bg); }
+    .product-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: center;
+        gap: 3rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .product-image img {
+        width: 100%;
+        display: block;
+        box-shadow: var(--header-shadow);
+        border-radius: 5px;
+    }
+    .product-text {
+        text-align: center;
+    }
+    .product-text h3 {
+        text-align: center;
+    }
+
+    @media (min-width: 768px) {
+        .product-grid {
+            grid-template-columns: 350px 1fr;
+            gap: 4rem;
+        }
+        .product-text {
+            text-align: left;
+        }
+        .product-text h3 {
+            text-align: left;
+        }
+    }
+
+
+    #services { background-color: var(--color-background); }
+    #service-details { background-color: var(--color-section-bg); }
+    
+    .service-category {
+        margin-top: 4rem;
+        padding-top: 4rem;
+        border-top: 1px solid var(--color-light-grey);
+    }
+    .service-category:first-of-type {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+    }
+    .service-category h3 { text-align: center; margin-bottom: 3rem; }
+    .service-category p { text-align: center; max-width: 700px; margin-left: auto; margin-right: auto;}
+    
+    .puppy-package {
+        background-color: var(--color-background);
+        padding: 3rem;
+        border-radius: 5px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+    .puppy-price {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+        padding: 1rem 2rem;
+        display: inline-block;
+        font-size: 1.8rem;
+        font-family: 'Cormorant Garamond', serif;
+        margin: 1.5rem 0;
+    }
+    .package-details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        text-align: left;
+        margin-top: 2rem;
+    }
+    .package-details-grid h5 { text-align: left; }
+    .package-details-grid ul { list-style-position: inside; padding-left: 0; list-style-type: none; }
+    .package-details-grid li { margin-bottom: 0.8rem; position: relative; padding-left: 25px;}
+    .package-details-grid li::before {
+        content: '🐾';
+        position: absolute;
+        left: 0;
+        color: var(--color-accent);
+    }
+    
+    .spa-menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem 4rem; }
+    .spa-item {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px dotted var(--color-light-grey);
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+    .spa-item-header { display: flex; justify-content: space-between; align-items: baseline; }
+    .spa-item h5 { margin: 0; font-size: 1.1rem; font-family: 'Montserrat'; text-transform: uppercase; letter-spacing: 1px;}
+    .spa-item-price { font-weight: 700; color: var(--color-primary); }
+    .spa-item p { font-size: 0.9rem; margin: 0.5rem 0 0 0; }
+
+    #experience { background-color: var(--color-section-bg); }
+    .journey-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; }
+    .journey-image { opacity: 0; }
+    .journey-image img { width: 100%; display: block; box-shadow: 0 8px 25px rgba(0,0,0,0.08); object-fit: cover; height: 100%; max-height: 550px;}
+    .journey-text { opacity: 0; text-align: left; }
+    #experience .journey-text h3 { text-align: left; }
+    #experience .journey-text .section-divider { margin: 0 0 2rem 0; max-width: 50px; }
+    .journey-process { margin-top: 2rem; }
+    .journey-process ul { list-style: none; }
+    .journey-process li { display: flex; margin-bottom: 1rem; text-align: left; }
+    .journey-process svg { width: 20px; height: 20px; fill: var(--color-accent); margin-right: 1rem; flex-shrink: 0; margin-top: 4px; }
+    
+    #gallery { background-color: var(--color-background); }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    .gallery-grid img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 4px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gallery-grid img:hover {
+        transform: scale(1.03);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    
+    #promotions { background-color: var(--color-section-bg); }
+    .promotions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .promo-card { text-align: center; background-color: var(--color-background); padding: 2.5rem; border-radius: 5px; box-shadow: 0 5px 25px rgba(0,0,0,0.05); }
+
+    #faq { background-color: var(--color-background); }
+    #faq .title-container h2 { font-family: 'Montserrat', sans-serif; font-size: 1.3rem; font-weight: 400; text-transform: uppercase; letter-spacing: 3px; }
+    .faq-container { max-width: 800px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--color-light-grey); transition: border-color 0.4s ease; }
+    .faq-question { width: 100%; background: none; border: none; text-align: left; padding: 1.5rem 0; font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; color: var(--color-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .faq-icon { transition: transform 0.4s ease; font-style: normal; }
+    .faq-item.active .faq-icon { transform: rotate(45deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+    .faq-answer p { padding: 0 0 1.5rem; font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 400; font-size: 1.15rem; line-height: 1.6; opacity: 0; transition: opacity 0.4s ease 0.2s; }
+    .faq-item.active .faq-answer { max-height: 300px; }
+    .faq-item.active .faq-answer p { opacity: 1; }
+
+    #testimonials { background-color: var(--color-section-bg); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
+    .testimonial-card { background-color: var(--color-background); padding: 2.5rem; border: 1px solid var(--color-light-grey); display: flex; flex-direction: column; transition: all 0.4s ease;}
+    .testimonial-card p { flex-grow: 1; font-style: italic; color: var(--color-text); margin-bottom: 1.5rem; }
+    .testimonial-card cite { font-style: normal; font-weight: 700; color: var(--color-primary); text-align: right; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+    
+    #contact { background: var(--color-primary); color: var(--color-background); text-align: center; transition: all 0.4s ease; }
+    #contact .title-container h2 { font-family: 'Montserrat', sans-serif; font-weight: 300; text-transform: uppercase; letter-spacing: 4px; font-size: clamp(1.8rem, 5vw, 2.2rem); color: var(--color-background); }
+    #contact p { max-width: 600px; margin: 0 auto 2.5rem auto; color: var(--color-text); }
+    body.dark-mode #contact { background: #1F1F1F; }
+
+    #location {
+        background-color: var(--color-background);
+        padding-bottom: 7rem;
+    }
+    .map-container {
+        border-radius: 5px; 
+        overflow: hidden; 
+        box-shadow: var(--header-shadow);
+        transition: box-shadow 0.4s ease;
+    }
+    .map-container iframe {
+        display: block;
+        width: 100%;
+        height: 450px;
+        border: 0;
+    }
+
+    footer { background-color: var(--color-section-bg); padding: 4rem 0 3rem; text-align: center; font-size: 0.9rem; transition: background-color 0.4s ease; }
+    .footer-logo-container {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    .footer-logo {
+        max-height: 80px;
+        width: auto;
+    }
+    .footer-content { border-top: 1px solid var(--color-light-grey); padding-top: 4rem; transition: border-color 0.4s ease; }
+    .footer-content .contact-info p { margin-bottom: 0.5rem; font-weight: 400; }
+    .footer-content .contact-info .parking-info { font-size: 0.85rem; font-style: italic; margin-top: 0.2rem; }
+    .social-links { margin-top: 1.5rem; } .social-links a { font-size: 1rem; color: var(--color-text); letter-spacing: 3px; }
+    .social-links a:hover { color: var(--color-accent); }
+    
+    .service-showcase-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+    .service-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+        height: 400px;
+        cursor: default;
+    }
+    .service-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .service-card:hover img {
+        transform: scale(1.05);
+    }
+    .service-card-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 2.5rem 1.5rem 1.5rem;
+        color: white;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0) 100%);
+        transform: translateY(30%);
+        transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .service-card:hover .service-card-content {
+        transform: translateY(0);
+    }
+    .service-card-content h5 {
+        color: white;
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+        font-family: 'Cormorant Garamond', serif;
+        text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+        text-align: left;
+    }
+    .service-card-content p {
+        font-size: 0.95rem;
+        font-weight: 300;
+        line-height: 1.6;
+        margin-bottom: 0;
+        opacity: 0;
+        transition: opacity 0.4s ease 0.1s;
+    }
+    .service-card:hover .service-card-content p {
+        opacity: 1;
+    }
+
+    @media (max-width: 1024px) {
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .main-nav {
+            position: fixed;
+            inset: 0 0 0 40%;
+            flex-direction: column;
+            padding: 7rem 2rem 2rem;
+            background: var(--color-header-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            transform: translateX(100%);
+            transition: transform 350ms ease-out;
+            z-index: 998;
+            justify-self: unset;
+        }
+        body.nav-open .main-nav { transform: translateX(0); }
+        .main-nav ul { flex-direction: column; align-items: flex-start; gap: 2rem; }
+        .main-nav a { font-size: 1.2rem; }
+        .header-actions { justify-self: unset; }
+        .nav-toggle { display: block; position: relative; z-index: 999; background: transparent; border: 0; width: 2rem; height: 2rem; cursor: pointer; }
+        .hamburger { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 28px; height: 2px; background-color: var(--color-primary); transition: transform 300ms ease, background-color 300ms ease; }
+        .hamburger::before, .hamburger::after { content: ''; position: absolute; left: 0; width: 100%; height: 100%; background-color: var(--color-primary); transition: transform 300ms ease; }
+        .hamburger::before { transform: translateY(-8px); }
+        .hamburger::after { transform: translateY(8px); }
+        body.nav-open .hamburger { transform: translate(-50%, -50%) rotate(45deg); }
+        body.nav-open .hamburger::before { transform: rotate(-90deg) translate(-8px); opacity: 1; }
+        body.nav-open .hamburger::after { transform: rotate(0deg); opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+        section { padding: 5rem 0; }
+        .logo img { max-height: 50px; }
+        .journey-grid, .package-details-grid, .training-grid, .spa-menu-grid, .promotions-grid { grid-template-columns: 1fr; }
+        .gallery-grid { grid-template-columns: 1fr; }
+        .hero-content p { font-size: 1rem; }
+        .about-text, .journey-text { text-align: center; }
+        .about-text h2, #experience .journey-text h3 { text-align: center !important; }
+        #experience .journey-text .section-divider { margin: 2rem auto; }
+        .faq-question { font-size: 1.2rem; }
+        .main-nav { inset: 0 0 0 30%; }
+        .service-card { height: 350px; }
+    }
+</style>
+
+</head>
+<body>
+
+<header class="main-header">
+    <div class="container">
+        <a href="#hero" class="logo">
+            <img src="https://files.catbox.moe/d0aw42.jpg" alt="Pawfect Style Logo">
+        </a>
+        
+        <nav class="main-nav" id="main-nav">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#training">Training</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <a href="https://wa.me/447543597707" target="_blank" rel="noopener noreferrer" class="btn nav-book-btn">Contact Us</a>
+            <label class="switch"><input type="checkbox" id="theme-toggle-input"><span class="slider"></span></label>
+            <button class="nav-toggle" aria-label="toggle navigation menu" aria-expanded="false">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section id="hero">
+        <div class="hero-content">
+            <span class="hero-subheading">Welcome To</span>
+            <h1>Pawfect Style</h1>
+            <p>DOG GROOMING SPA • WEST DRAYTON</p>
+            <a href="#services" class="btn btn-primary">Our Services <span class="arrow">→</span></a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text fade-in-element animate-slide-up">
+                    <h2>A Lifelong Passion for Dogs</h2><hr class="section-divider" style="margin: 2rem auto; max-width: 50px;">
+                    <p>With 30 years of experience in the dog sector, International Certified Master Groomer Ruth Revillas Rodriguez has built an impressive reputation. After starting her journey in Veterinary Nursing in Spain, Ruth discovered her true passion in grooming and made the switch. Now, many years later, she runs a successful salon in West London, attracting clients from far and wide.</p>
+                    <p>Ruth prides herself on delivering professional, caring service and top-notch grooming. Her goal is to exceed every customer's expectations and give their furry friends a truly unforgettable experience.</p>
+                    <p>She cares deeply about dogs, and prioritizes their well-being. She is passionate about providing top-notch care, using high-quality, natural products, and catering to all breeds and ages (though she's had to adjust her services to only accommodate <strong>small dogs up to 12kg due to a back injury</strong>).</p>
+                    <p>She's worked with Vets along grooming, so not only she has experience in grooming, but also general knowledge in dogs health, which is a bonus! She's also trained in First Aid and Reiki.</p>
+                    <p>She owns a few Lhasa Apsos, including Champions and TV/movie stars, that you will quite often see in the salon. A true Lhasa Apso enthusiast after 25 years owning, showing, breeding, and sporadically judging, she's become an expert in the breed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="training">
+        <div class="container">
+            <div class="title-container fade-in-element">
+                <h2 class="animate-slide-up">Learn From a Master</h2>
+                <hr class="section-divider">
+                <p class="animate-slide-up" style="max-width: 700px; margin: 0 auto;">Leverage my 30 years of expertise. I offer personalized training sessions designed to empower you with the skills and confidence to care for your dog's coat like a professional.</p>
+            </div>
+            <div class="training-grid fade-in-element animate-slide-up">
+                <div class="training-card">
+                    <h5>Learn How To Groom Your Dog</h5>
+                    <p>Our 1 Day Pet Grooming course is designed for owners who would like to learn how to groom their own dog under the expert tuition of our tutor. The course is also suitable as a longer taster day for those who are considering a career in dog grooming.</p>
+                    <a href="https://wa.me/447543597707" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top:1rem;">Book Now</a>
+                </div>
+                <div class="training-card">
+                    <h5>Coat Maintenance Masterclass</h5>
+                    <p>A 1-to-1 class where you'll learn everything about maintaining a show coat on Lhasas, Shih Tzus, etc. From bathing, to banding, trimming, show prepping, de-matting, and even wrapping if required. Limited-time only!</p>
+                     <p><strong>Contact Ruth Revillas Rodriguez to book:</strong><br>ruthrevillas@hotmail.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="products">
+        <div class="container">
+             <div class="title-container fade-in-element">
+                <h2 class="animate-slide-up">The Pawfect Guide</h2>
+                <hr class="section-divider">
+            </div>
+            <div class="product-grid fade-in-element animate-slide-up">
+                <div class="product-image">
+                    <img src="https://files.catbox.moe/h0zxwe.png" alt="A book about dogs titled The Pawfect Guide">
+                </div>
+                <div class="product-text">
+                    <h3>Coming Soon: The Ultimate Grooming Guide</h3>
+                    <p>I'm pouring decades of knowledge, professional secrets, and breed-specific techniques into a comprehensive guide. Whether it becomes a book, a video series, or both, it will be the ultimate resource for any dog owner.</p>
+                    <p><strong>Contact me to join the waitlist and be the first to know when it's released!</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="container">
+            <div class="title-container fade-in-element">
+                <h2 class="animate-slide-up">Our Core Services</h2>
+                <hr class="section-divider">
+                <p class="animate-slide-up" style="max-width: 700px; margin: 0 auto;">From essential full grooms to luxurious spa treatments, we offer a range of services designed to make your dog look and feel their absolute best.</p>
+            </div>
+            <div class="service-showcase-grid fade-in-element animate-slide-up">
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1597799191372-7b6a4a62fe98?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Dog being bathed during a groom">
+                    <div class="service-card-content">
+                        <h5>Full Groom & Styling</h5>
+                        <p>A complete pampering session including a hydrobath, custom haircut, nail trim, and ear cleaning.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1543257600-9343fd37a4a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80" alt="Happy dog wrapped in a towel after a bath">
+                    <div class="service-card-content">
+                        <h5>Luxury SPA Treatments</h5>
+                        <p>Indulge your pet with our ozone therapy, mud baths, and deluxe pawdicures for ultimate relaxation.</p>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="https://images.unsplash.com/photo-1591160690555-5de71c51c657?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Cute fluffy puppy sitting on grass">
+                    <div class="service-card-content">
+                        <h5>Puppy's First Groom</h5>
+                        <p>A gentle introduction to the grooming experience, building confidence for a lifetime of happy visits.</p>
+                    </div>
+                </div>
+                 <div class="service-card">
+                     <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Close-up of a dog's clean teeth">
+                    <div class="service-card-content">
+                        <h5>Ultrasound Teeth Cleaning</h5>
+                        <p>A pain-free, anaesthesia-free solution for tackling plaque and tartar, promoting better oral health.</p>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 4rem;">
+                <a href="#service-details" class="btn">View All Packages & Pricing <span class="arrow">→</span></a>
+            </div>
+        </div>
+    </section>
+
+    <section id="service-details">
+        <div class="container">
+            <div class="title-container fade-in-element">
+                <h2 class="animate-slide-up">Service & Package Details</h2>
+                <p class="services-intro animate-slide-up">We offer a complete range of grooming services, spa treatments, and training courses for small and medium-sized dogs. Each service is tailored to your dog's individual needs to ensure they leave our salon looking and feeling fantastic.</p>
+            </div>
+
+            <!-- Puppy University Package -->
+            <div class="service-category fade-in-element animate-slide-up">
+                <div class="puppy-package">
+                    <h3>Puppy University Package</h3>
+                    <p>The perfect package to ensure your pet gets the right start in life by introducing them to the grooming salon environment. Their training in learning how to behave while being groomed is just as important as house training and social skills. This package has been designed to help keep your dog's coat in perfect condition as well as to save you money.</p>
+                    <div class="puppy-price">ENROL FOR £120</div>
+                    <p>Four introductory sessions to grooming, building from socialisation and nail clipping right through to their first full groom. Puppies need to be under five months of age and have had all their vaccinations. The package will need to be completed within three months.</p>
+                    <div class="package-details-grid">
+                        <div>
+                            <h5>From Enrolment to Graduation...</h5>
+                            <p><strong>Steps 1 to 3:</strong> Three sessions to include socialisation, bath, dry, comb out, face, feet, bottom trim and nail clipping, working towards the final stage.</p>
+                            <p><strong>Step 4:</strong> Socialisation, full groom including bath, all over trim and nail clipping.</p>
+                        </div>
+                        <div>
+                            <h5>As well as all this, you will get...</h5>
+                            <ul>
+                                <li>A welcome pack with advice, treats, etc.</li>
+                                <li>Advice on looking after your dog's coat.</li>
+                                <li>A five minute training session on brushing/combing.</li>
+                                <li>A five minute 'Cleany Teeth' ultrasound session.</li>
+                                <li>A certificate at the end of the course.</li>
+                                <li>A graduation photo for mummy and daddy!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SPA Menu -->
+            <div class="service-category fade-in-element animate-slide-up">
+                <h3>Pawfect Style SPA Menu</h3>
+                <div class="spa-menu-grid">
+                    <div class="spa-menu-column">
+                        <div class="spa-item"><div class="spa-item-header"><h5>Nail Grinding</h5><span class="spa-item-price">£5</span></div><p>Removal of raw edges after trimming for a smooth finish.</p></div>
+                        <div class="spa-item"><div class="spa-item-header"><h5>Nail Trim</h5><span class="spa-item-price">£15</span></div></div>
+                        <div class="spa-item"><div class="spa-item-header"><h5>Deluxe Pawdicure</h5><span class="spa-item-price">£20</span></div><p>Paw trim and sanitising, nail trim and grind/filing, paw balm.</p></div>
+                        <div class="spa-item"><div class="spa-item-header"><h5>Facial Scrub</h5><span class="spa-item-price">£5</span></div><p>Tearless, Gently exfoliates, hydrating, removes dirt saliva and tear stains.</p></div>
+                        <div class="spa-item"><div class="spa-item-header"><h5>Deep Conditioning</h5><span class="spa-item-price">£5</span></div><p>Aids to remove mats, releases dead hair, improves coat manageability, adds shine, repairs damaged coats, soothes irritated skin, reduces breakage.</p></div>
+                        <div class="spa-item"><div class="spa-item-header"><h5>Mud Bath</h5><span class="spa-item-price">£3 - £5</span></div><p>Deodoriser deep cleansing, releases skin irritations, releases dead hair, repels fleas and ticks.</p></div>
+                    </div>
+                    <div class="spa-menu-column">
+                        <div class="spa-item"><div class="spa-item-header"><h5>Nagayu CO2</h5><span class="spa-item-price">£10</span></div><p>Hydrotherapy that helps with itchiness, hot spots, yeast, etc.</p></div>
+                        <div class="spa-item"><div class="spa-item-header"><h5>Teeth Cleaning</h5><span class="spa-item-price">£40</span></div><p>Ultrasound technology to treat and prevent inflamed gums, plaque, tartar, bacteria, ulcers. Pain free - no need for anaesthesia!</p></div>
+                        <div class="spa-item"><div class="spa-item-header"><h5>Ozone Treatment</h5><span class="spa-item-price">£20</span></div><p>Removes chlorine, dirt, bacteria, viruses, fungus, and mud on the dog's fur and skin. Sterilizes and disinfects without using chemicals, is less irritating to the skin. Decomposes sebum and malodorous gases that cause odors, releases stress.</p></div>
+                        <div class="spa-item"><div class="spa-item-header"><h5>Deluxe SPA Package</h5><span class="spa-item-price">£10</span></div><p>Facial, Mud Bath, Nail grinding, leave in conditioner and bandana or bow.</p></div>
+                        <div class="spa-item"><div class="spa-item-header"><h5>Gold SPA Package</h5><span class="spa-item-price">£30</span></div><p>Facial, Mud Bath, Deluxe Pawdicure, Ozone Deep conditioning and Nagayu.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Microbubble Therapy -->
+            <div class="service-category fade-in-element animate-slide-up">
+                <h3>Microbubble & Ozone Therapy</h3>
+                <p>The latest innovation on SPAs to treat skin issues in a natural way. This is a shampoo and chemical-free type of treatment process. It uses hydromassage and ozone water to improve skin and coat conditions, alleviating symptoms of infections, allergies and dermatitis.</p>
+                <div class="package-details-grid" style="margin-top:3rem;">
+                    <div>
+                        <h5>What it does</h5>
+                        <ul>
+                            <li>Sterilizes and disinfects without using harsh chemicals.</li>
+                            <li>Decomposes sebum and gases that cause odors.</li>
+                            <li>Removes dirt, relieves itchy, oxidizes bacteria, funguses and viruses, prevents or treats infections.</li>
+                            <li>Bathes away physical fatigue, relaxes joints and muscles, increases blood circulation, eases stress, gives back to dogs a sense of vitality.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5>How it works</h5>
+                        <p>Micro-bubbles and negative ions are generated to accelerate the dissolution of oxygen and reduce the chlorine rate in the water. Ozone (O³) helps oxygenate your body and further support healing. A rapid and natural oxidizer, renowned as the most powerful antimicrobial that exists in nature.</p>
+                        <p><strong>Add on to any groom for £20, or stand alone treatment (POA).</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="container">
+            <div class="journey-grid">
+                <div class="journey-image fade-in-element animate-slide-in-left">
+                    <img src="https://www.omlet.co.uk/images/cache/1024/654/Dog-Lhasa_Apso-Three_wonderful,_little_Lhasa_Apsos,_enjoying_each_others_company_on_the_grass.jpg" alt="Three happy lhasa apso dogs relaxing on grass">
+                </div>
+                <div class="journey-text fade-in-element animate-slide-in-right">
+                    <h3>The Pawfect Experience</h3>
+                    <hr class="section-divider" style="text-align:left; margin: 0 0 2rem 0;">
+                    <p>We've designed our grooming process from start to finish with your dog's comfort and safety as our top priority. Using only the best top-quality natural products and high-end equipment, each step ensures a positive, stress-free experience.</p>
+                    <div class="journey-process">
+                        <ul>
+                            <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg><div><strong>1. Consultation & Coat Check:</strong> We begin with a friendly chat to understand your preferences and a gentle assessment of your dog's coat and skin.</div></li>
+                            <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg><div><strong>2. Tailored Grooming Session:</strong> Your dog receives their personalized grooming treatment, including a warm hydrobath, premium shampoos, and expert styling.</div></li>
+                            <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg><div><strong>3. Finishing Touches & Happy Handoff:</strong> We add the final flourishes, like a spritz of dog-friendly cologne, before reuniting you with your fresh, happy, and beautifully groomed pet.</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="container">
+            <div class="title-container fade-in-element">
+                <h2 class="animate-slide-up">Our Happy Clients</h2>
+                <hr class="section-divider">
+            </div>
+            <div class="gallery-grid fade-in-element animate-slide-up">
+                <img src="https://files.catbox.moe/02an0v.jpeg" alt="A beautifully groomed white dog">
+                <img src="https://files.catbox.moe/hg3zdw.jpeg" alt="A freshly groomed dog with a stylish cut">
+                <img src="https://files.catbox.moe/rnv9ud.jpeg" alt="A happy dog after its grooming session">
+                <img src="https://files.catbox.moe/82zcw5.jpeg" alt="A perfectly groomed dog looking at the camera">
+                <img src="https://files.catbox.moe/morlmy.jpeg" alt="A cute groomed dog">
+            </div>
+        </div>
+    </section>
+
+    <section id="promotions">
+         <div class="container">
+            <div class="title-container fade-in-element">
+                <h2 class="animate-slide-up">Special Offers</h2>
+                <hr class="section-divider">
+            </div>
+            <div class="promotions-grid fade-in-element animate-slide-up">
+                <div class="promo-card">
+                    <h5>Capture the Cutest Moments</h5>
+                    <p>We now offer a professional photo service to capture your dog's new look!</p>
+                    <p><strong>Choose from:</strong><br>A Digital Photo for only £10<br>A 10x8 Framed Photo for just £20</p>
+                </div>
+                <div class="promo-card">
+                    <h5>Refer a Friend</h5>
+                    <p>And you both will get a <strong>FREE SPA PACKAGE</strong>.</p>
+                    <p>Enquire within for details!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <div class="container">
+            <div class="title-container fade-in-element"><h2 class="animate-slide-up">Frequently Asked Questions</h2><hr class="section-divider"></div>
+            <div class="faq-container fade-in-element animate-slide-up">
+                <div class="faq-item"><button class="faq-question">What size dogs do you groom? <span class="faq-icon">+</span></button><div class="faq-answer"><p>To ensure the highest quality of care and safety, we specialize exclusively in grooming small dogs up to 12kg. We do not offer services for larger dog breeds due to a back injury.</p></div></div>
+                <div class="faq-item"><button class="faq-question">Do you have parking available? <span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes, there is plenty of parking outside the salon, in The Plough carpark. On arrival report to our reception to enter your number plate and validate it free of charge for 6 hours.</p></div></div>
+                <div class="faq-item"><button class="faq-question">What methods of payment do you accept? <span class="faq-icon">+</span></button><div class="faq-answer"><p>I accept card, Apple Pay, cash and bank transfer payments. Please make sure you have paid before collecting your dog.</p></div></div>
+                <div class="faq-item"><button class="faq-question">Do I need to walk my dog before the appointment? <span class="faq-icon">+</span></button><div class="faq-answer"><p>Please ensure you walk your dog before your appointment. This helps release energy and provides your dog with an opportunity to relieve themselves (going to the toilet) before the grooming process begins. A good walk contributes to a more comfortable and enjoyable grooming experience for your dog.</p></div></div>
+                <div class="faq-item"><button class="faq-question">How long will you keep my dog for? <span class="faq-icon">+</span></button><div class="faq-answer"><p>Our appointment system is designed to minimise the time your dog spends in the salon, creating a stress-free environment. Every dog is different, some need more time or a break in between. Usually a small dog in a 6 week schedule take 2 hours.</p></div></div>
+                <div class="faq-item"><button class="faq-question">Should I feed my dog before his appointment? <span class="faq-icon">+</span></button><div class="faq-answer"><p>You may feed your dog a small amount at least two hours before their appointment, as this can keep them comfortable during the grooming. Please avoid overfeeding and ensure your dog has the opportunity to toilet well before your arrival.</p></div></div>
+                <div class="faq-item"><button class="faq-question">Will I have a choice of style? <span class="faq-icon">+</span></button><div class="faq-answer"><p>We provide a variety of styles for you to choose from, and the available options for your dog depend on the condition of the coat and temperament.</p></div></div>
+                <div class="faq-item"><button class="faq-question">When should my puppy have his first grooming session? <span class="faq-icon">+</span></button><div class="faq-answer"><p>We advise you to start your puppy’s grooming with a bath and tidy at least ten days after the final vaccinations. Your puppy can come in for an enjoyable session to become familiar with the sights and smells of the salon and build positive associations from an early age. Please bring an item with a familiar scent for your puppy to help maintain scent continuity.</p></div></div>
+                <div class="faq-item"><button class="faq-question">Why can you not give me a definite price over the phone? <span class="faq-icon">+</span></button><div class="faq-answer"><p>Prices are realistically set based on the breed and the required amount of work. We cannot give you a set price without seeing your dog and the work to be carried out. You may incur additional charges for the removal of stubborn knots, overdue and unkempt coats, aggressive behaviour, or flea baths.</p></div></div>
+                <div class="faq-item"><button class="faq-question">Do you charge a no-show fee? <span class="faq-icon">+</span></button><div class="faq-answer"><p>We can only groom so many dogs in a day, so please note that if you fail to attend your appointment, you will loose your deposit. We are a small business and cannot afford to lose money through no-shows. Although your money does not cover the money we have lost, it does go some way towards covering costs. Please remember that deposits are non-refundable but are transferable 48 hours before the appointment time.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials">
+        <div class="container">
+            <div class="title-container fade-in-element"><h2 class="animate-slide-up">Happy Pups, Happy Parents</h2><hr class="section-divider"></div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in-element animate-slide-up"><p>"Ruth is the only person who I would allow to groom my show dogs, she is the best! The dogs love going to her, they come home looking and smelling beautiful and are always happy to see her, I trust her 100%... if you want the best then this is THE place to go!"</p><cite>— Lyn Church</cite></div>
+                <div class="testimonial-card fade-in-element animate-slide-up"><p>"Ruth has groomed my Lola for a few years now. My Lola feels so comfortable with her that I would never think of changing to anyone else. Ruth is so professional and listens to what I want for my pet, previous groomers have ruined my pets..."</p><cite>— R K</cite></div>
+                <div class="testimonial-card fade-in-element animate-slide-up"><p>"This is simply an amazing dog grooming business and we cannot thank them enough for the wonderful way they transform our Buster, so much so that we are now booking him in regularly. They are meticulous in the way they carry out the groom..."</p><cite>— Charlie Cooper</cite></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="title-container fade-in-element"><h2 class="animate-slide-up">Ready to Book an Appointment?</h2></div>
+            <p class="fade-in-element animate-slide-up">Treat your best friend to the pampering they deserve. Contact us today to schedule your dog's next grooming session at our West Drayton salon.</p>
+            <a href="https://wa.me/447543597707" target="_blank" rel="noopener noreferrer" class="btn btn-primary fade-in-element animate-slide-up">Contact Us Now<span class="arrow">→</span></a>
+        </div>
+    </section>
+
+    <section id="location">
+        <div class="container">
+            <div class="title-container fade-in-element">
+                <h2 class="animate-slide-up">Come Visit Us</h2>
+                <hr class="section-divider">
+            </div>
+            <div class="map-container fade-in-element animate-slide-up">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2484.053163773177!2d-0.4603730236979601!3d51.49348747181057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72f78520dff3a1%3A0xc52e27b60ce336bc!2sPawfect%20Style%20Dog%20Grooming%20SPA!5e0!3m2!1sen!2suk!4v1701103310752!5m2!1sen!2suk" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+         <div class="footer-logo-container">
+            <img src="https://files.catbox.moe/d0aw42.jpg" alt="Pawfect Style Logo" class="footer-logo">
+        </div>
+        <div class="footer-content">
+            <div class="contact-info">
+                <h4>Contact & Location</h4>
+                <p><a href="https://wa.me/447543597707" target="_blank" rel="noopener noreferrer">07543 597707</a></p>
+                <p><a href="https://www.google.com/maps/search/?api=1&query=239+Sipson+Road,+West+Drayton+UB7+0HW" target="_blank" rel="noopener noreferrer">239 Sipson Road, West Drayton UB7 0HW</a></p>
+                <p class="parking-info">* Free Car Park Available *</p>
+            </div>
+            <div class="social-links"><a href="https://www.instagram.com/pawfectstyle/" target="_blank" rel="noopener noreferrer" aria-label="Pawfect Style on Instagram">Instagram</a></div>
+            <p style="margin-top: 3rem; font-size: 0.8rem;">© 2024 Pawfect Style Dog Grooming SPA. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.querySelector('.main-header');
+        const themeToggleInput = document.getElementById('theme-toggle-input');
+        const body = document.body;
+        const navToggle = document.querySelector('.nav-toggle');
+        const mainNav = document.getElementById('main-nav');
+
+        // --- THEME SWITCHER ---
+        const applyTheme = (theme) => {
+            const isDarkMode = theme === 'dark';
+            body.classList.toggle('dark-mode', isDarkMode);
+            themeToggleInput.checked = isDarkMode;
+        };
+
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        applyTheme(savedTheme);
+
+        themeToggleInput.addEventListener('change', () => {
+            const newTheme = themeToggleInput.checked ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
+
+        // --- HEADER SCROLL EFFECT ---
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // --- SMOOTH SCROLLING ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetElement = document.querySelector(this.getAttribute('href'));
+                if (targetElement) {
+                   targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                if (body.classList.contains('nav-open')) {
+                    body.classList.remove('nav-open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+
+        // --- SCROLL-TRIGGERED ANIMATIONS ---
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const fadeInObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => { 
+                if (entry.isIntersecting) { 
+                    entry.target.classList.add('is-visible'); 
+                    observer.unobserve(entry.target); 
+                } 
+            });
+        }, observerOptions);
+        document.querySelectorAll('.fade-in-element').forEach(el => { fadeInObserver.observe(el); });
+
+        // --- FAQ ACCORDION ---
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                const currentlyActive = document.querySelector('.faq-item.active');
+                if (currentlyActive && currentlyActive !== item) { 
+                    currentlyActive.classList.remove('active'); 
+                }
+                item.classList.toggle('active');
+            });
+        });
+        
+        // --- MOBILE NAVIGATION TOGGLE ---
+        navToggle.addEventListener('click', () => {
+            const isNavOpen = body.classList.toggle('nav-open');
+            navToggle.setAttribute('aria-expanded', isNavOpen);
+        });
+
+    });
+</script>
+</body>
+</html>
